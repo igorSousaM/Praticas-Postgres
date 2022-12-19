@@ -61,7 +61,7 @@ CREATE TABLE "public.Carrinho" (
 	"id" serial NOT NULL,
 	"id da compra/produto" int NOT NULL,
 	"Status" TEXT NOT NULL,
-	"data da compra" DATE NOT NULL DEFAULT 'NOW()',
+	"data da compra" DATE NOT NULL DEFAULT NOW(),
 	"endereço de entrega" TEXT NOT NULL,
 	CONSTRAINT "Carrinho_pk" PRIMARY KEY ("id")
 ) WITH (
