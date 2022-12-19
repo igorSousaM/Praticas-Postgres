@@ -1,80 +1,80 @@
-CREATE TABLE "public.Usuarios" (
+CREATE TABLE "public.usuarios" (
 	"id" serial NOT NULL,
 	"name" varchar(50) NOT NULL,
 	"email" TEXT NOT NULL UNIQUE,
 	"senha" TEXT NOT NULL,
-	CONSTRAINT "Usuarios_pk" PRIMARY KEY ("id")
+	CONSTRAINT "usuarios_pk" PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
 );
 
 
 
-CREATE TABLE "public.Produtos" (
+CREATE TABLE "public.produtos" (
 	"id" serial NOT NULL,
 	"name" TEXT NOT NULL UNIQUE,
 	"preco" int NOT NULL,
 	"foto_principal" TEXT NOT NULL,
 	"fotos_secundaria" TEXT NOT NULL,
-	"id da categoria" int NOT NULL,
-	CONSTRAINT "Produtos_pk" PRIMARY KEY ("id")
+	"id_categoria" int NOT NULL,
+	CONSTRAINT "produtos_pk" PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
 );
 
 
 
-CREATE TABLE "public.Tamanhos" (
+CREATE TABLE "public.tamanhos" (
 	"id" serial NOT NULL,
 	"name" varchar(5) NOT NULL UNIQUE,
-	CONSTRAINT "Tamanhos_pk" PRIMARY KEY ("id")
+	CONSTRAINT "tamanhos_pk" PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
 );
 
 
 
-CREATE TABLE "public.Categorias" (
+CREATE TABLE "public.categorias" (
 	"id" serial NOT NULL,
 	"name" varchar(50) NOT NULL UNIQUE,
-	CONSTRAINT "Categorias_pk" PRIMARY KEY ("id")
+	CONSTRAINT "categorias_pk" PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
 );
 
 
 
-CREATE TABLE "public.Compra/produto" (
+CREATE TABLE "public.compra_por_produto" (
 	"id" serial NOT NULL,
-	"id do usuario" int NOT NULL,
-	"id do produtos" int NOT NULL,
-	"id do tamanho" int NOT NULL,
-	"Qtd. do produto" int NOT NULL,
-	CONSTRAINT "Compra/produto_pk" PRIMARY KEY ("id")
+	"id_usuario" int NOT NULL,
+	"id_produto" int NOT NULL,
+	"id_tamanho" int NOT NULL,
+	"qtd_produto" int NOT NULL,
+	CONSTRAINT "compra_por_produto_pk" PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
 );
 
 
 
-CREATE TABLE "public.Carrinho" (
+CREATE TABLE "public.carrinho" (
 	"id" serial NOT NULL,
-	"id da compra/produto" int NOT NULL,
-	"Status" TEXT NOT NULL,
-	"data da compra" DATE NOT NULL DEFAULT NOW(),
-	"endereço de entrega" TEXT NOT NULL,
-	CONSTRAINT "Carrinho_pk" PRIMARY KEY ("id")
+	"id_compra_por_produto" int NOT NULL,
+	"status" TEXT NOT NULL DEFAULT 'criada',
+	"data_compra" DATE NOT NULL DEFAULT NOW(),
+	"endereço_entrega" TEXT NOT NULL,
+	CONSTRAINT "carrinho_pk" PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
 );
 
 
 
-CREATE TABLE "public.Tamanhos disponíveis" (
+CREATE TABLE "public.tamanhos_disponiveis" (
 	"id" serial NOT NULL,
-	"id do produto" int NOT NULL,
-	"id do tamanho" int NOT NULL,
-	CONSTRAINT "Tamanhos disponíveis_pk" PRIMARY KEY ("id")
+	"id_produto" int NOT NULL,
+	"id_tamanho" int NOT NULL,
+	CONSTRAINT "tamanhos_disponiveis_pk" PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
 );
@@ -82,18 +82,18 @@ CREATE TABLE "public.Tamanhos disponíveis" (
 
 
 
-ALTER TABLE "Produtos" ADD CONSTRAINT "Produtos_fk0" FOREIGN KEY ("id da categoria") REFERENCES "Categorias"("id");
+ALTER TABLE "produtos" ADD CONSTRAINT "produtos_fk0" FOREIGN KEY ("id_categoria") REFERENCES "categorias"("id");
 
 
 
-ALTER TABLE "Compra/produto" ADD CONSTRAINT "Compra/produto_fk0" FOREIGN KEY ("id do usuario") REFERENCES "Usuarios"("id");
-ALTER TABLE "Compra/produto" ADD CONSTRAINT "Compra/produto_fk1" FOREIGN KEY ("id do produtos") REFERENCES "Produtos"("id");
-ALTER TABLE "Compra/produto" ADD CONSTRAINT "Compra/produto_fk2" FOREIGN KEY ("id do tamanho") REFERENCES "Tamanhos"("id");
+ALTER TABLE "compra_por_produto" ADD CONSTRAINT "compra_por_produto_fk0" FOREIGN KEY ("id_usuario") REFERENCES "usuarios"("id");
+ALTER TABLE "compra_por_produto" ADD CONSTRAINT "compra_por_produto_fk1" FOREIGN KEY ("id_produto") REFERENCES "produtos"("id");
+ALTER TABLE "compra_por_produto" ADD CONSTRAINT "compra_por_produto_fk2" FOREIGN KEY ("id_tamanho") REFERENCES "tamanhos"("id");
 
-ALTER TABLE "Carrinho" ADD CONSTRAINT "Carrinho_fk0" FOREIGN KEY ("id da compra/produto") REFERENCES "Compra/produto"("id");
+ALTER TABLE "carrinho" ADD CONSTRAINT "carrinho_fk0" FOREIGN KEY ("id_da_compra_por_produto") REFERENCES "compra_por_produto"("id");
 
-ALTER TABLE "Tamanhos disponíveis" ADD CONSTRAINT "Tamanhos disponíveis_fk0" FOREIGN KEY ("id do produto") REFERENCES "Produtos"("id");
-ALTER TABLE "Tamanhos disponíveis" ADD CONSTRAINT "Tamanhos disponíveis_fk1" FOREIGN KEY ("id do tamanho") REFERENCES "Tamanhos"("id");
+ALTER TABLE "tamanhos_disponiveis" ADD CONSTRAINT "tamanhos_disponiveis_fk0" FOREIGN KEY ("id_produto") REFERENCES "produtos"("id");
+ALTER TABLE "tamanhos_disponiveis" ADD CONSTRAINT "tamanhos_disponiveis_fk1" FOREIGN KEY ("id_tamanho") REFERENCES "tamanhos"("id");
 
 
 
